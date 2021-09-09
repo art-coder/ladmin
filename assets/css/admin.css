@@ -1,0 +1,27 @@
+.timeline li .type {
+  width: 40px;
+  height: 40px;
+  font-size: 12px;
+  line-height: 40px;
+  position: absolute;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  left: 13px;
+  top: 0;
+  font-style: normal;
+  font-weight: bold;
+}
+
+.timeline li .type a {
+  color: #fff;
+}
+
+.timeline li .timeline-item .timeline-header {
+  color: #0073B7;
+  font-weight: bold;
+}
+
+.text-now-status {
+  padding: 10px 15px;
+}
