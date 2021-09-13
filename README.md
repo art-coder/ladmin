@@ -1,5 +1,6 @@
 composer create-project laravel/laravel example-app
-composer requrie ladmin
+cd example-app
+composer require artcoder/ladmin
 
 //   {
 //     "autoload": {

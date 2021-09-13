@@ -17,7 +17,7 @@
         "psr-4": {
             "Artcoder\\Ladmin\\": "src/"
         },
-        "files": ["Helpers/helpers.php"]
+        "files": ["./src/Helpers/helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {
