@@ -1,29 +1,36 @@
-composer create-project laravel/laravel example-app
-cd example-app
-composer require artcoder/ladmin
+# composer create-project laravel/laravel example-app
+# cd example-app
+# composer require artcoder/ladmin
 
-//   {
-//     "autoload": {
-//       "psr-4": {
-//         "App\\": "app/",
-//         "Modules\\": "modules/"
-//       }
-//     }
-//   }
-//   composer dump-autoload
-
-php artisan ladmin:setup
+composer.json
+{
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Modules\\": "modules/"
+    }
+  }
+}
+# mkdir modules
+# composer dump-autoload
 
 config/auth.php
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => Artcoder\Ladmin\Entities\User::class,
-        ],
-    ],
+'providers' => [
+  'users' => [
+    'driver' => 'eloquent',
+    'model' => Artcoder\Ladmin\Entities\User::class,
+  ],
+],
 
+config/app.php
+  'providers' => [
+    ...
 
+  ],
 
-// 现在的问题
-1.整个后台还没有开始测试，只是把命令行整起了
-2.命令行只对于部分系统，比如说有关module的命令都还没有测试通过
+.env
+  DB_DATABASE=xxx
+  DB_USERNAME=xxx
+  DB_PASSWORD=xxx
+
+# php artisan ladmin:setup
