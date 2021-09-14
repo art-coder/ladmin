@@ -11,7 +11,7 @@ composer require artcoder/ladmin
 {
   "autoload": {
     "psr-4": {
-      "App\\": "app/",
+      ...
       "Modules\\": "modules/"
     }
   }
@@ -50,7 +50,12 @@ composer dump-autoload
 
 ```sh
 php artisan ladmin:setup
-# php artisan module:make Cms
+```
+
+# Modules & Repository
+
+```sh
+php artisan module:make Cms
 ```
 
 ```php
@@ -58,5 +63,50 @@ php artisan ladmin:setup
   ...
   use use Artcoder\Ladmin\Http\Controllers\Controller as AdminController;
   ...
-  class CmsController extends AdminController
+  class CmsController extends AdminController {
+	...
+	public $moduleName = 'cms';
+	...
+	
+// Model
+	use Artcoder\Ladmin\Entities\Model;
+
+	class FarmingAccount extends Model
+// Repositories
+namespace Modules\Cms\Repositories;
+
+use Modules\Cms\Entities\Posts;
+use Artcoder\Ladmin\Repositories\BaseRepository;
+
+class PostsRepository extends BaseRepository
+{
+    public function model()
+    {
+        return Posts::class;
+    }
+}
+// view
+$folder       = 'cms-posts';
+$title           = '文章列表';
+$targetUrl   = route('admin.cms.create');
+$targetTitle = '添加文章';
+$list            = $this->posts->all();
+return view(
+     'cms::' . $folder . '.index',
+	 compact('folder', 'list', 'title', 'targetUrl', 'targetTitle')
+);
+
+
+return view(
+	'admin::partials.create',
+		compact('folder', 'title', 'targetUrl', 'targetTitle', 'model', 'formUrl')
+);
+
+return view(
+	'admin::partials.edit',
+		compact('id', 'folder', 'title', 'targetUrl', 'targetTitle', 'model', 'formUrl')
+);
 ```
+
+
+

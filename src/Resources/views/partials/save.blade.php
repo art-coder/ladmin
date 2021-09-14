@@ -12,9 +12,9 @@
       @yield('hidden')
       @php
         if($moduleName){
-          $path = $moduleName . '::' . $folder . '._form';
+          $path = $moduleName . '::' . strtr($folder, '-', '.' ) . '._form';
         } else {
-          $path = $folder . '._form';
+          $path = strtr($folder, '-', '.' ) . '._form';
         }
       @endphp
       @include($path)
