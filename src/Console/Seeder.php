@@ -21,6 +21,7 @@ class Seeder extends Command
     public function handle()
     {
         $this->call('db:seed', [ '--class' => LadminDatabaseSeeder::class ]);
+        $this->call('module:seed');
     }
 
 }

@@ -71,7 +71,7 @@ class Setup extends Command
     protected function seed()
     {
         // ====>  添加测试数据
-        $this->call('db:seed');
+        // $this->call('db:seed');
         $this->call('ladmin:seed');
     }
 }

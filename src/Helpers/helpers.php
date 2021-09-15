@@ -72,7 +72,7 @@ if (!function_exists('can_delete')) {
         if (method_exists($model, 'canDeletePK')) {
             return $model->canDeletePK();
         } else {
-            return false;
+            return true;
         }
     }
 }

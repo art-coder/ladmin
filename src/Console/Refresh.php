@@ -19,12 +19,14 @@ class Refresh extends Command
 
     public function handle()
     {
+        // 清空所有的数据
         $this->call('migrate:refresh');
-        // $this->call('module:migrate-refresh');
+        // $this->call('module:migrate-refresh');// 只能清空module的数据，不能清空admin的数据
+
         // 添加测试数据
         $this->call('ladmin:seed');
-        $this->call('db:seed');
-        // $this->call('module:seed');
+        // $this->call('db:seed');// 所有的测试数据入库
+
     }
 
     /**
