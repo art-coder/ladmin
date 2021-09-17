@@ -2,10 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+if (!function_exists('diffBetweenTwoDays')) {
+    function diffBetweenTwoDays($day1, $day2)
+    {
+        $second1 = strtotime($day1);
+        $second2 = strtotime($day2);
+
+        if ($second1 < $second2) {
+            $tmp = $second2;
+            $second2 = $second1;
+            $second1 = $tmp;
+        }
+        return ($second1 - $second2) / 86400;
+    }
+}
+
 if (!function_exists('get_modules_ordered')) {
     function get_modules_ordered()
     {
-        return array_merge([ 'Admin' => app('admin') ], app('modules')->getOrdered());
+        return array_merge(['Admin' => app('admin')], app('modules')->getOrdered());
     }
 }
 

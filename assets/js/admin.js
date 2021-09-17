@@ -241,7 +241,13 @@ $(function () {
 })
 
 //Date picker
-$(".datetimepicker").datetimepicker({
+$(".datetimepicker-complete").datetimepicker({
   format: "YYYY-MM-DD HH:mm:ss",
+  locale: moment.locale('zh-CN')
+});
+
+//Date picker
+$(".datetimepicker-simplify").datetimepicker({
+  format: "YYYY-MM-DD",
   locale: moment.locale('zh-CN')
 });
