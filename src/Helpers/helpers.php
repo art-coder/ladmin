@@ -2,6 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
+if (!function_exists('getConfigTypeNameById')) {
+    function getConfigTypeNameById($id, $config, $name = 'name')
+    {
+        foreach ($config as $item) {
+            if ($id == $item['id']) {
+                return $item[$name];
+            }
+        }
+    }
+}
 
 if (!function_exists('diffBetweenTwoDays')) {
     function diffBetweenTwoDays($day1, $day2)

@@ -12,14 +12,14 @@ composer require artcoder/ladmin
   "autoload": {
     "psr-4": {
       ...
-      "Modules\\": "modules/"
+      "Modules\\": "Modules/"
     }
   }
 }
 ```
 
 ```sh
-mkdir modules
+mkdir Modules
 composer dump-autoload
 ```
 
@@ -34,11 +34,18 @@ composer dump-autoload
 ```
 
 ```php
+// app/Http/Middleware/EncryptCookies.php
+protected $except = [
+  'hints'
+];
+```
+
+```php
 // config/app.php
-  'providers' => [
-    ...
-    Artcoder\Ladmin\AdminServiceProvider::class,
-  ],
+'providers' => [
+  ...
+  Artcoder\Ladmin\AdminServiceProvider::class,
+],
 ```
 
 ```sh
@@ -50,6 +57,10 @@ composer dump-autoload
 
 ```sh
 php artisan ladmin:setup
+...
+#for update
+#del admin.php & status.php
+#php artisan vendor:publish --provider="Artcoder\Ladmin\AdminServiceProvider"
 ```
 
 # Modules & Repository
@@ -60,53 +71,73 @@ php artisan module:make Cms
 
 ```php
 // CmsController.php
-  ...
+  // ...
   use use Artcoder\Ladmin\Http\Controllers\Controller as AdminController;
-  ...
+  // ...
   class CmsController extends AdminController {
-	...
+	// ...
 	public $moduleName = 'cms';
-	...
+	// ...
 	
 // Model
 	use Artcoder\Ladmin\Entities\Model;
 
 	class FarmingAccount extends Model
+
 // Repositories
-namespace Modules\Cms\Repositories;
+  namespace Modules\Cms\Repositories;
 
-use Modules\Cms\Entities\Posts;
-use Artcoder\Ladmin\Repositories\BaseRepository;
+  use Modules\Cms\Entities\Posts;
+  use Artcoder\Ladmin\Repositories\BaseRepository;
 
-class PostsRepository extends BaseRepository
-{
+  class PostsRepository extends BaseRepository
+  {
     public function model()
     {
-        return Posts::class;
+      return Posts::class;
     }
-}
+  }
 // view
-$folder       = 'cms-posts';
-$title           = '文章列表';
-$targetUrl   = route('admin.cms.create');
-$targetTitle = '添加文章';
-$list            = $this->posts->all();
-return view(
-     'cms::' . $folder . '.index',
-	 compact('folder', 'list', 'title', 'targetUrl', 'targetTitle')
-);
+  $folder      = 'cms-posts';
+  $title       = '文章列表';
+  $targetUrl   = route('admin.cms.create');
+  $targetTitle = '添加文章';
+  $list        = $this->posts->all();
+  return view(
+      'cms::' . $folder . '.index',
+    compact('folder', 'list', 'title', 'targetUrl', 'targetTitle')
+  );
 
+  return view(
+    'admin::partials.create',
+      compact('folder', 'title', 'targetUrl', 'targetTitle', 'model', 'formUrl')
+  );
 
-return view(
-	'admin::partials.create',
-		compact('folder', 'title', 'targetUrl', 'targetTitle', 'model', 'formUrl')
-);
-
-return view(
-	'admin::partials.edit',
-		compact('id', 'folder', 'title', 'targetUrl', 'targetTitle', 'model', 'formUrl')
-);
+  return view(
+    'admin::partials.edit',
+      compact('id', 'folder', 'title', 'targetUrl', 'targetTitle', 'model', 'formUrl')
+  );
 ```
 
+```php
+// Traits
+  // Artcoder\Ladmin\Libraries\Support\Traits\HasConfig
+    // #cacheKey
+    // @getItem($index, $defalt = false)
+    // @clearCache()
+    // @getList()
+  // Artcoder\Ladmin\Libraries\Support\Traits\HasConfigRepository
+    // @info($index = '')
+    // @pluckInfo()
+    // @clearCache()
+  // Artcoder\Ladmin\Libraries\Support\Traits\HasStatus
+    // #
+  // Artcoder\Ladmin\Libraries\Support\Traits\HasStoreAuth
+  // Artcoder\Ladmin\Libraries\Support\Traits\HasTree
+  // Artcoder\Ladmin\Libraries\Support\Traits\HasTreeRepository
+  // Artcoder\Ladmin\Libraries\Support\Traits\HasUnableDeletePK
+    // #unableIdValue [1, 2...]
+    // @canDeletePK()
+```
 
 

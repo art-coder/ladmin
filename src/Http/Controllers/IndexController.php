@@ -29,6 +29,7 @@ class IndexController extends Controller
         $modules = get_modules_ordered();
         $hints   = [];
         $cookie  = $request->cookie('hints');
+        // dump($cookie);
         $user    = $request->user();
         if ($cookie) {
             $cookie = json_decode($cookie, true);

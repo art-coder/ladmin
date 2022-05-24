@@ -11,13 +11,15 @@
       @csrf
       @yield('hidden')
       @php
-        if($moduleName){
-          $path = $moduleName . '::' . $folder . '._form';
-        } else {
-          $path = $folder . '._form';
+        if (!isset($viewPath)) {
+          if ($moduleName) {
+            $viewPath = $moduleName . '::' . $folder . '._form';
+          } else {
+            $viewPath = $folder . '._form';
+          }
         }
       @endphp
-      @include($path)
+      @include($viewPath)
     </div>
     <div class="box-footer text-center">
       <button type="reset" class="btn btn-default">重置</button>

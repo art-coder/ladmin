@@ -54,9 +54,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'ad
 
 });
 
-
-
-
+// login logout
+Route::group(['middleware' => ['web']], function () {
+    Route::get('login', 'AccountController@login')->name('login');
+    Route::post('login', 'AccountController@loginPost')->name('login.post');
+    Route::get('logout', 'AccountController@logout')->name('logout');
+    Route::get('register', 'AccountController@register')->name('register');
+    Route::post('register', 'AccountController@registerPost')->name('register.post');
+});
 
 // admin loin logout
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web']], function () {

@@ -15,6 +15,14 @@ abstract class BaseRepository extends Repository
 
     abstract public function model();
 
+    // 如果要使用链式操作，必须要先重置model，不然得到的值会是上一次的值
+    // 所以如果是链式操作，先调用此方法然后在调用其他方法
+    // 这样的的目的是写法优雅一些，避免一大堆的makeModel，导致看起来实例化了很多模型（其实本身就是这样）
+    public function chain()
+    {
+        return $this->makeModel();
+    }
+
     public function fill($attr, $extData = [])
     {
         if ($extData) {

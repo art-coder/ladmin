@@ -50,6 +50,7 @@
 $("[name='hitsCheckBox']").bootstrapSwitch();
 $('input[name="hitsCheckBox"]').on('switchChange.bootstrapSwitch', function(event, state) {
   var cookies = $.cookie('hints');
+  console.log(cookies);
   var moduleName = $(this).attr('data-module');
   var moduleKey = $(this).attr('data-key');
   if(typeof(cookies) == 'undefined'){
