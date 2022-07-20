@@ -4,8 +4,7 @@ namespace Artcoder\Ladmin\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Artcoder\Ladmin\Http\Requests\StoreRoleRequest;
-use Artcoder\Ladmin\Repositories\PermissionRepository;
-use Artcoder\Ladmin\Repositories\RoleRepository;
+use Artcoder\Ladmin\Repositories\BaseRepository;
 
 class RoleController extends Controller
 {
@@ -14,11 +13,11 @@ class RoleController extends Controller
     protected $role       = null;
     public $moduleName    = 'admin';
 
-    public function __construct(PermissionRepository $permission, RoleRepository $role)
+    public function __construct(BaseRepository $base)
     {
         parent::__construct();
-        $this->permission = $permission;
-        $this->role       = $role;
+        $this->permission = $base->builder('Permission', 'Admin');
+        $this->role       = $base->builder('Role', 'Admin');
     }
 
     public function index()

@@ -4,8 +4,7 @@ namespace Artcoder\Ladmin\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Artcoder\Ladmin\Http\Requests\StoreUserRequest;
-use Artcoder\Ladmin\Repositories\RoleRepository;
-use Artcoder\Ladmin\Repositories\UserRepository;
+use Artcoder\Ladmin\Repositories\AdminRepository;
 
 class UserController extends Controller
 {
@@ -14,16 +13,17 @@ class UserController extends Controller
     protected $role    = null;
     public $moduleName = 'admin';
 
-    public function __construct(UserRepository $user, RoleRepository $role)
+    public function __construct(AdminRepository $admin)
     {
         parent::__construct();
-        $this->user = $user;
-        $this->role = $role;
+        $this->admin = $admin;
+        $this->user = $admin->builder('User');
+        $this->role = $admin->builder('Role');
     }
 
     public function index(Request $request)
     {
-        $list = $this->user->pagination(15);
+        $list = $this->admin->model('User')->paginate(15);
 
         return view('admin::user.index', compact('list'));
     }
@@ -36,7 +36,7 @@ class UserController extends Controller
         $targetUrl   = route('admin.user.index', ['page' => $page]);
         $targetTitle = '用户列表';
         $formUrl     = route('admin.user.store', ['page' => $page]);
-        $user        = $this->user->makeModel();
+        $user        = $this->admin->model('User');
         $role        = $this->role->all();
 
         return view(

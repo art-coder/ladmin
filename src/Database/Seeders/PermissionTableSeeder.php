@@ -3,17 +3,15 @@
 namespace Artcoder\Ladmin\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Artcoder\Ladmin\Repositories\PermissionRepository;
-use Artcoder\Ladmin\Repositories\RoleRepository;
-use Artcoder\Ladmin\Repositories\UserRepository;
+use Artcoder\Ladmin\Repositories\BaseRepository;
 
 class PermissionTableSeeder extends Seeder
 {
-    public function __construct(PermissionRepository $permission, RoleRepository $role, UserRepository $user)
+    public function __construct(BaseRepository $base)
     {
-        $this->permission = $permission;
-        $this->role = $role;
-        $this->user = $user;
+        $this->permission = $base->builder('Permission', 'Admin');
+        $this->role = $base->builder('Role', 'Admin');
+        $this->user = $base->builder('User', 'Admin');
     }
 
     public function run()

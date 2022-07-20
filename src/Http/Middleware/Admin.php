@@ -6,8 +6,7 @@ use Auth;
 use Closure;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Http\Request;
-use Artcoder\Ladmin\Repositories\PermissionRepository;
-use Artcoder\Ladmin\Repositories\RoleRepository;
+use Artcoder\Ladmin\Repositories\AdminRepository;
 
 class Admin
 {
@@ -17,11 +16,11 @@ class Admin
     protected $role       = null;
     protected $adminGroup = 1; // role id is 1
 
-    public function __construct(Gate $gate, PermissionRepository $permission, RoleRepository $role)
+    public function __construct(Gate $gate, AdminRepository $admin)
     {
-        $this->permission = $permission;
-        $this->role       = $role;
-        $this->excepts    = $permission->getModuleConfig('excepts');
+        $this->permission = $admin->builder('Permission', 'Admin');
+        $this->role       = $admin->builder('Role', 'Admin');
+        $this->excepts    = $admin->getModuleConfig('excepts');
         $this->gate       = $gate;
     }
 

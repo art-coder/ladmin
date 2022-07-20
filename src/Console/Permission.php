@@ -5,7 +5,7 @@ namespace Artcoder\Ladmin\Console;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Artcoder\Ladmin\Repositories\PermissionRepository;
+use Artcoder\Ladmin\Repositories\BaseRepository;
 
 class Permission extends Command
 {
@@ -14,10 +14,10 @@ class Permission extends Command
     protected $description = 'permission reload.';
     protected $permission = null;
 
-    public function __construct(PermissionRepository $mp)
+    public function __construct(BaseRepository $base)
     {
         parent::__construct();
-        $this->permission = $mp;
+        $this->permission = $base->builder('Permission', 'Admin');
     }
 
     /**

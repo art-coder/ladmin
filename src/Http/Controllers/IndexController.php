@@ -4,8 +4,7 @@ namespace Artcoder\Ladmin\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Artcoder\Ladmin\Http\Requests\ResetPasswordRequest;
-use Artcoder\Ladmin\Repositories\ConfigRepository;
-use Artcoder\Ladmin\Repositories\UserRepository;
+use Artcoder\Ladmin\Repositories\AdminRepository;
 // use Artcoder\Ladmin\Services\Jdcloud;
 use Storage;
 use Artcoder\Ladmin\Libraries\Services\Uploads;
@@ -58,15 +57,15 @@ class IndexController extends Controller
         return view('admin::home.index', compact('hints'));
     }
 
-    public function setting(ConfigRepository $config)
+    public function setting(AdminRepository $admin)
     {
-        $settings = $config->info();
+        $settings = $admin->builder('Config', 'Admin')->info();
         return view('admin::setting.index', compact('settings'));
     }
 
-    public function create(ConfigRepository $config)
+    public function create(AdminRepository $admin)
     {
-        $setting     = $config->makeModel();
+        $setting     = $admin->builder('Config', 'Admin');
         $folder      = 'setting';
         $title       = '添加配置';
         $targetUrl   = route('admin.setting.index');
@@ -76,33 +75,33 @@ class IndexController extends Controller
         return view('admin::partials.create', compact('setting', 'folder', 'title', 'formUrl', 'targetUrl', 'targetTitle'));
     }
 
-    public function save(Request $request, ConfigRepository $config)
+    public function save(Request $request, AdminRepository $admin)
     {
         $all     = $request->all();
         $item    = $all['item'];
         $content = $all['content'];
         foreach ($item as $key => $value) {
-            $one          = $config->firstOrNew(['item' => $value]);
+            $one          = $admin->model('Config', 'Admin')->firstOrNew(['item' => $value]);
             $one->content = $content[$key];
             $one->save();
         }
-        $config->clearCache();
+        $admin->model('Config', 'Admin')->clearCache();
         return redirect('/admin/setting/index')->withSuccess('修改配置成功！！');
     }
 
-    public function saveSingle(Request $request, ConfigRepository $config)
+    public function saveSingle(Request $request, AdminRepository $admin)
     {
         $item        = $request->get('item');
         $type        = $request->get('type');
         $description = $request->get('description');
         $content     = $request->get('content');
         if ($item && $description && $content) {
-            $one              = $config->firstOrNew(['item' => $item]);
+            $one              = $admin->model('Config', 'Admin')->firstOrNew(['item' => $item]);
             $one->type        = $type;
             $one->description = $description;
             $one->content     = $content;
             $one->save();
-            $config->clearCache();
+            $admin->model('Config', 'Admin')->clearCache();
             return redirect('/admin/setting/index')->withSuccess('添加配置成功！！');
         } else {
             return redirect()->back()->withErrors('请填写正确的配置项！！');
@@ -114,12 +113,12 @@ class IndexController extends Controller
         return view('admin::setting.password');
     }
 
-    public function savePassword(ResetPasswordRequest $request, UserRepository $user)
+    public function savePassword(ResetPasswordRequest $request, AdminRepository $admin)
     {
         $update = array(
             'password' => bcrypt($request->password),
         );
-        $result = $user->update($update, auth()->user()->id);
+        $result = $admin->builder('User', 'Admin')->update($update, auth()->user()->id);
         return redirect(route('admin.setting.password'))->withSuccess('修改密码成功，请下次使用新密码登录！！');
     }
 

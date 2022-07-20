@@ -3,7 +3,7 @@
 namespace Artcoder\Ladmin\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Artcoder\Ladmin\Repositories\ConfigRepository;
+use Artcoder\Ladmin\Repositories\AdminRepository;
 
 class ConfigTableSeeder extends Seeder
 {
@@ -12,7 +12,7 @@ class ConfigTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run(ConfigRepository $config)
+    public function run(AdminRepository $admin)
     {
         dump('config seeder start...');
         // $config->create([
@@ -21,7 +21,7 @@ class ConfigTableSeeder extends Seeder
         //     'description' => '是否开启网站注册',
         //     'content'     => 'on',
         // ]);
-        $config->clearCache();
+        $admin->clearCache();
         dump('config seeder done.');
     }
 }

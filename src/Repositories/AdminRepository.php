@@ -2,14 +2,8 @@
 
 namespace Artcoder\Ladmin\Repositories;
 
-use Artcoder\Ladmin\Entities\Permission;
-
-class PermissionRepository extends BaseRepository
+class AdminRepository extends BaseRepository
 {
-    public function model()
-    {
-        return Permission::class;
-    }
 
     public function group($checked = [])
     {
@@ -64,4 +58,25 @@ class PermissionRepository extends BaseRepository
         }
         return $res;
     }
+
+    public function info($index = '')
+    {
+        if ($index) {
+            return $this->builder('Config', 'Admin')->getItem($index);
+        } else {
+            return $this->builder('Config', 'Admin')->getList();
+        }
+    }
+
+    public function pluckInfo()
+    {
+        $list = $this->info();
+        return array_pluck($list, 'content', 'item');
+    }
+
+    public function clearCache()
+    {
+        return $this->model('Config', 'Admin')->clearCache();
+    }
+
 }

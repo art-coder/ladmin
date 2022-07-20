@@ -4,7 +4,7 @@ namespace Artcoder\Ladmin\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Artcoder\Ladmin\Http\Requests\StorePermissionRequest;
-use Artcoder\Ladmin\Repositories\PermissionRepository;
+use Artcoder\Ladmin\Repositories\BaseRepository;
 
 class PermissionController extends Controller
 {
@@ -12,10 +12,10 @@ class PermissionController extends Controller
     protected $permission = null;
     public $moduleName    = 'admin';
 
-    public function __construct(PermissionRepository $permission)
+    public function __construct(BaseRepository $base)
     {
         parent::__construct();
-        $this->permission = $permission;
+        $this->permission = $base->builder('Permission', 'Admin');
     }
 
     public function index()
