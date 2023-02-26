@@ -24,15 +24,13 @@ class BaseRepository
         } else {
             $class = '\Modules\\' . $module . '\\Entities\\' . $model;
         }
-        if (!isset($this->map[$class])) {
-            $this->map[$class] = new $class;
-        }
-        $this->builder = $this->map[$class];
+        if (!isset($this->map[$class])) $this->map[$class] = new $class;
         // $this->builder = app()->make($model);
         if ($res == 'Repository') {
+            $this->builder = $this->map[$class];
             return $this;
         } else {
-            return $this->builder;
+            return $this->map[$class];
         }
     }
 
@@ -41,11 +39,15 @@ class BaseRepository
         return $this->apply($model, $module);
     }
 
+    public function repository($model, $module = 'Admin')
+    {
+        return $this->apply($model, $module);
+    }
+
     public function fill($attr, $extData = [])
     {
-        if ($extData) {
-            $attr = array_merge($attr, $extData);
-        }
+        if ($extData) $attr = array_merge($attr, $extData);
+        if (array_key_exists('password', $attr)) $this->builder->makeVisible('password');
         return $this->builder->fill($attr);
     }
 
@@ -53,9 +55,9 @@ class BaseRepository
     {
         $attr = $this->fill($request->all(), $extData)->toArray();
         if ($id) {
-            return $this->update($attr, $id);
+            return $this->builder->update($attr, $id);
         } else {
-            return $this->create($attr);
+            return $this->builder->create($attr);
         }
     }
 
@@ -66,29 +68,19 @@ class BaseRepository
 
     public function search($keywords, $fields, $limit = 10, $columns = ['*'], $method = "paginate")
     {
-        // 需要用到作用域   https://laravelacademy.org/post/22017
-        dd('search dont realize.');
-        // if (is_string($fields)) {
-        //     $fields = explode(",", trim($fields));
-        // }
-        // $model = $this->builder;
-        // if (count($fields) == 1) {
-        //     $first = array_shift($fields);
-        //     $this->scopeQuery(function ($query) use ($keywords, $first) {
-        //         return $query->where(trim($first), 'like', '%' . $keywords . '%');
-        //     });
-        //     $this->applyScope();
-        // } else {
-        //     foreach ($fields as $field) {
-        //         $this->scopeQuery(function ($query) use ($keywords, $field) {
-        //             return $query->orWhere(trim($field), 'like', '%' . $keywords . '%');
-        //         });
-        //         $this->applyScope();
-        //     }
-        // }
-        // return $this->scopeQuery(function ($query) {
-        //     return $query->orderBy('id', 'desc');
-        // })->paginate($limit, $columns, $method);
+        if (is_string($fields)) $fields = explode(",", trim($fields));
+        $model = $this->builder;
+        if (count($fields) == 1) {
+            $first = array_shift($fields);
+            $model = $model->where(trim($first), 'like', '%' . $keywords . '%');
+        } else {
+            foreach ($fields as $field) {
+                $model = $model->orWhere(function ($query) use ($keywords, $field) {
+                    return $query->orWhere(trim($field), 'like', '%' . $keywords . '%');
+                });
+            }
+        }
+        return $model->orderBy('id', 'desc')->paginate($limit, $columns, $method);
     }
 
     public function updateAll($attr, $where)

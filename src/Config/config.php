@@ -9,11 +9,7 @@ return [
             'idf'     => 'system',
             'text'    => '系统设置',
             'icon'    => 'dashboard',
-            'can'     => [
-                'system-index',
-                'system-config',
-                'system-password',
-            ],
+            'can'     => ['system-index', 'system-config', 'system-password'],
             'submenu' => [
                 [
                     'text'  => '系统首页',
@@ -21,16 +17,14 @@ return [
                     'icon'  => 'dashboard',
                     'can'   => 'system-index',
                     'route' => 'admin.home.index',
-                ],
-                [
+                ], [
                     'text'  => '系统配置',
                     'url'   => 'admin/setting/index',
                     'icon'  => 'cogs',
                     'can'   => 'system-config',
                     'route' => 'admin.setting.index',
                     'activeRoutes' => ['admin.setting.create'],
-                ],
-                [
+                ], [
                     'text'  => '修改密码',
                     'url'   => 'admin/setting/password',
                     'icon'  => 'key',
@@ -39,17 +33,12 @@ return [
                 ],
             ],
         ],
-
         // 权限系统
         [
             'idf'     => 'permission',
             'text'    => '权限系统',
             'icon'    => 'users',
-            'can'     => [
-                'permission-list',
-                'role-list',
-                'user-list',
-            ],
+            'can'     => ['permission-list', 'role-list', 'user-list'],
             'submenu' => [
                 [
                     'text'         => '权限列表',
@@ -58,16 +47,14 @@ return [
                     'can'          => 'permission-list',
                     'route'        => 'admin.permission.index',
                     'activeRoutes' => ['admin.permission.create', 'admin.permission.edit'],
-                ],
-                [
+                ], [
                     'text'         => '角色列表',
                     'url'          => 'admin/role/index',
                     'icon'         => 'object-group',
                     'can'          => 'role-list',
                     'route'        => 'admin.role.index',
                     'activeRoutes' => ['admin.role.create', 'admin.role.edit'],
-                ],
-                [
+                ], [
                     'text'         => '用户列表',
                     'url'          => 'admin/user/index',
                     'icon'         => 'user',

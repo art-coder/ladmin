@@ -8,7 +8,7 @@
 @section('content')
 
 <div class="box box-info">
-  <div class="box-header with-border"></div>
+  <div class="box-header with-border"><h3 class="box-title"><i class="fa fa-warning"></i> 系统配置</h3></div>
   <form class="" action="{{ route('admin.setting.index') }}" method="post" enctype="multipart/form-data" role="form" >
     @csrf
     <div class="box-body">

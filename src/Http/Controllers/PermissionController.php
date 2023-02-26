@@ -15,7 +15,7 @@ class PermissionController extends Controller
     public function __construct(BaseRepository $base)
     {
         parent::__construct();
-        $this->permission = $base->builder('Permission', 'Admin');
+        $this->permission = $base->repository('Permission', 'Admin');
     }
 
     public function index()

@@ -30,9 +30,7 @@ class IndexController extends Controller
         $cookie  = $request->cookie('hints');
         // dump($cookie);
         $user    = $request->user();
-        if ($cookie) {
-            $cookie = json_decode($cookie, true);
-        }
+        if ($cookie)  $cookie = json_decode($cookie, true);
         // dump($cookie);
         foreach ($modules as $module) {
             $moduleName = $module->getLowerName();
@@ -41,9 +39,7 @@ class IndexController extends Controller
                 $hintsArrs = require $path;
                 if ($hintsArrs) {
                     foreach ($hintsArrs as $key => $value) {
-                        if (!has_permission($user, $value['can'])) {
-                            continue;
-                        }
+                        if (!has_permission($user, $value['can'])) continue;
                         $hintsArr['moduleName'] = $moduleName;
                         $hintsArr['key']        = $key;
                         $hintsArr['name']       = $value['name'];
@@ -59,13 +55,13 @@ class IndexController extends Controller
 
     public function setting(AdminRepository $admin)
     {
-        $settings = $admin->builder('Config', 'Admin')->info();
+        $settings = $admin->repository('Config', 'Admin')->info();
         return view('admin::setting.index', compact('settings'));
     }
 
     public function create(AdminRepository $admin)
     {
-        $setting     = $admin->builder('Config', 'Admin');
+        $setting     = $admin->model('Config', 'Admin');
         $folder      = 'setting';
         $title       = '添加配置';
         $targetUrl   = route('admin.setting.index');
@@ -115,10 +111,8 @@ class IndexController extends Controller
 
     public function savePassword(ResetPasswordRequest $request, AdminRepository $admin)
     {
-        $update = array(
-            'password' => bcrypt($request->password),
-        );
-        $result = $admin->builder('User', 'Admin')->update($update, auth()->user()->id);
+        $update = ['password' => bcrypt($request->password)];
+        $admin->repository('User', 'Admin')->update($update, auth()->user()->id);
         return redirect(route('admin.setting.password'))->withSuccess('修改密码成功，请下次使用新密码登录！！');
     }
 
@@ -128,12 +122,9 @@ class IndexController extends Controller
             $keywords = $request->input('keywords');
             Storage::disk('cache')->put('sensitive.txt', $keywords);
         } else {
-            $exists = Storage::disk('cache')->exists('sensitive.txt');
-            if ($exists) {
-                $keywords = Storage::disk('cache')->get('sensitive.txt');
-            } else {
-                $keywords = '';
-            }
+            $exists   = Storage::disk('cache')->exists('sensitive.txt');
+            $keywords = '';
+            if ($exists) $keywords = Storage::disk('cache')->get('sensitive.txt');
         }
         return view('admin::setting.sensitive', ['keywords' => $keywords]);
     }
@@ -141,7 +132,6 @@ class IndexController extends Controller
     public function upload(Request $request, Uploads $uploads)
     {
         $image        = $uploads->file($request->file('file'));
-        // \Log::info($image);
         return response()->json([
             'error'   => 0,
             'url'     => $image,

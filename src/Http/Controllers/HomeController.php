@@ -2,7 +2,6 @@
 
 namespace Artcoder\Ladmin\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
 // SessionGuard 处理用户登录事宜
@@ -36,9 +35,9 @@ class HomeController extends Controller
             $username = 'username';
         }
         $data = [
-            $username => $usernameVal,
+            $username  => $usernameVal,
             'password' => $request->input('password'),
-            'status' => 0,// 0才是正常的，其他的都不正常
+            'status'   => 0,// 0才是正常的，其他的都不正常
         ];
         auth()->attempt($data, $request->input('remember') ? true : false);
         return redirect(route('admin.home.index'));

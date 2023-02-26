@@ -12,8 +12,6 @@
     @endif
 </div>
 
-{!! snippets()->formGroup('haha', '哈哈') !!}
-
 <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
     <label for="item" class="col-sm-2 control-label">标签(字母)</label>
     <div class="col-sm-10">

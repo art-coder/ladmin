@@ -9,26 +9,16 @@ use Artcoder\Ladmin\Repositories\AdminRepository;
 class UserController extends Controller
 {
 
-    protected $user    = null;
-    protected $role    = null;
     public $moduleName = 'admin';
 
-    public function __construct(AdminRepository $admin)
+    public function index(Request $request, AdminRepository $rep)
     {
-        parent::__construct();
-        $this->admin = $admin;
-        $this->user = $admin->builder('User');
-        $this->role = $admin->builder('Role');
-    }
-
-    public function index(Request $request)
-    {
-        $list = $this->admin->model('User')->paginate(15);
+        $list = $rep->model('User')->paginate(15);
 
         return view('admin::user.index', compact('list'));
     }
 
-    public function create(Request $request)
+    public function create(Request $request, AdminRepository $rep)
     {
         $page        = $request->input('page');
         $folder      = 'user';
@@ -36,8 +26,8 @@ class UserController extends Controller
         $targetUrl   = route('admin.user.index', ['page' => $page]);
         $targetTitle = '用户列表';
         $formUrl     = route('admin.user.store', ['page' => $page]);
-        $user        = $this->admin->model('User');
-        $role        = $this->role->all();
+        $user        = $rep->model('User');
+        $role        = $rep->model('Role')->all();
 
         return view(
             'admin::partials.create',
@@ -45,7 +35,7 @@ class UserController extends Controller
         );
     }
 
-    public function edit($id, Request $request)
+    public function edit($id, Request $request, AdminRepository $rep)
     {
         $page        = $request->input('page');
         $folder      = 'user';
@@ -53,8 +43,8 @@ class UserController extends Controller
         $targetUrl   = route('admin.user.index', ['page' => $page]);
         $targetTitle = '用户列表';
         $formUrl     = route('admin.user.store', ['page' => $page]);
-        $user        = $this->user->find($id);
-        $role        = $this->role->all();
+        $user        = $rep->model('User')->find($id);
+        $role        = $rep->model('Role')->all();
 
         return view(
             'admin::partials.edit',
@@ -62,24 +52,21 @@ class UserController extends Controller
         );
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request, AdminRepository $rep)
     {
         $page         = $request->input('page');
         $id           = $request->input('id');
         $roles        = $request->input('rids');
         $hasRoleCheck = $request->input('has_rids');
-        $user         = $this->user->find($id);
+        $user         = $rep->model('User')->find($id);
         if ($id) {
             $pass = $request->input('password');
             $user->fill($request->except(['password', 'page', 'id', 'rids']));
-            // change password
-            if ($pass) {
-                $user->password = bcrypt($pass);
-            }
+            if ($pass) $user->password = bcrypt($pass); // change password
             $user->save();
             $redirectUrl = route('admin.user.index', ['page' => $page]);
         } else {
-            $this->user->store($request, null, ['password' => bcrypt($request->input('password'))]);
+            $user = $rep->apply('User')->store($request, null, ['password' => bcrypt($request->input('password'))]);
             $redirectUrl = route('admin.user.index');
         }
         if ($hasRoleCheck) {
@@ -90,9 +77,9 @@ class UserController extends Controller
         return redirect($redirectUrl)->withSuccess($id ? '修改成功！' : '添加成功！');
     }
 
-    public function delete($id)
+    public function delete($id, AdminRepository $rep)
     {
-        $user = $this->user->find($id);
+        $user = $rep->model('User')->find($id);
         if (can_delete($user)) {
             $user->roles()->detach();
             $user->delete();
@@ -102,14 +89,13 @@ class UserController extends Controller
         }
     }
 
-    public function search(Request $request)
+    public function search(Request $request, AdminRepository $rep)
     {
         $keywords = $request->input('keywords');
         if ($keywords) {
-            // $list = $this->user->search($keywords, 'username, phone, email', 15);
-            $list = $this->user->search($keywords, ['username', 'phone', 'email'], 15);
+            $list = $rep->builder('User')->search($keywords, ['username', 'phone', 'email'], 15);
         } else {
-            $list = $this->user->pagination(15);
+            $list = $rep->model('User')->pagination(15);
         }
 
         return view('admin::user.index', compact('list', 'keywords'));

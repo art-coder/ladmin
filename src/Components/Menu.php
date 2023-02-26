@@ -19,7 +19,7 @@ class Menu extends Component
     protected function getLadminMenus()
     {
         $menus = [];
-        $conf = require(__DIR__ . '/../Config/config.php');
+        $conf  = require(__DIR__ . '/../Config/config.php');
         $menus = $conf['menus'];
         return $menus;
     }

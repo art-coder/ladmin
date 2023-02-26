@@ -2,6 +2,8 @@
 
 namespace Artcoder\Ladmin\Repositories;
 
+use Artcoder\Ladmin\Entities\Permission;
+
 class AdminRepository extends BaseRepository
 {
 
@@ -9,9 +11,10 @@ class AdminRepository extends BaseRepository
     {
         // $items = config('permission.items');
         $items = $this->getModuleConfig('permissions');
-        $lists = $this->all();
+        // $lists = $this->all();
+        $lists = Permission::all();
         // dump($lists->toArray());
-        $permissions = $lists->pluck('id', 'name');
+        $permissions = $lists->pluck('id', 'name')->toArray();
         // dump($permissions);
         foreach ($items as &$item) {
             foreach ($item['list'] as $key => &$value) {
@@ -62,9 +65,9 @@ class AdminRepository extends BaseRepository
     public function info($index = '')
     {
         if ($index) {
-            return $this->builder('Config', 'Admin')->getItem($index);
+            return $this->model('Config', 'Admin')->getItem($index);
         } else {
-            return $this->builder('Config', 'Admin')->getList();
+            return $this->model('Config', 'Admin')->getList();
         }
     }
 
