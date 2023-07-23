@@ -53,7 +53,8 @@ class RoleController extends Controller
         $targetTitle = '角色列表';
         $formUrl     = route('admin.role.store', ['page' => $page]);
         $role        = $this->role->find($id);
-        $permission  = $this->permission->group($role->permissions->pluck('id')->toArray());
+        $permissions = $role->permissions ? $role->permissions->pluck('id')->toArray() : [];
+        $permission  = $this->permission->group($permissions);
 
         return view(
             'admin::partials.edit',

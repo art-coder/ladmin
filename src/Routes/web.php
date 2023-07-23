@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web', 'admin']], function () {
     // home index
     Route::get('/', 'IndexController@index')->name('home.index');// 后台首页
-    Route::get('/test', 'IndexController@index')->name('test.index');// 测试页面
 
     Route::get('setting/index', 'IndexController@setting')->name('setting.index'); // 网站基本配置
     Route::post('setting/index', 'IndexController@save')->name('setting.index'); // 网站基本配置存储
@@ -61,6 +60,7 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('logout', 'AccountController@logout')->name('logout');
     Route::get('register', 'AccountController@register')->name('register');
     Route::post('register', 'AccountController@registerPost')->name('register.post');
+
 });
 
 // admin loin logout
@@ -68,4 +68,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['web']], f
     Route::get('login', 'HomeController@login')->name('login');
     Route::post('login', 'HomeController@pl')->name('pl');
     Route::get('logout', 'HomeController@logout')->name('logout');
+});
+
+// for ladmin test
+Route::group(['prefix' => 'ladmin', 'as' => 'admin.', 'middleware' => ['web']], function () {
+    Route::get('/test', 'TestController@index')->name('test');// 测试页面
 });

@@ -19,6 +19,7 @@ class CreateConfigTable extends Migration
             $table->string('type');
             $table->string('description');
             $table->text('content');
+            $table->string('value')->nullable();
         });
     }
 

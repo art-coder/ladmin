@@ -2,12 +2,12 @@
 
 namespace Artcoder\Ladmin\Entities;
 
-use Spatie\Permission\Models\Role as BaseModel;
 use Artcoder\Ladmin\Libraries\Support\Traits\HasUnableDeletePK;
+use Spatie\Permission\Models\Role as PRole;
 
-class Role extends BaseModel
+class Role extends PRole
 {
-    use HasUnableDeletePK;
+    use HasUnableDeletePK, MakeModel;
 
     protected $fillable = [
         'name', 'info', 'guard_name',

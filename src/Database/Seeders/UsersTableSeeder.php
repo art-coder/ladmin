@@ -3,16 +3,16 @@
 namespace Artcoder\Ladmin\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Artcoder\Ladmin\Repositories\UserRepository;
+use Artcoder\Ladmin\Repositories\BaseRepository;
 
 class UsersTableSeeder extends Seeder
 {
 
     protected $model = null;
 
-    public function __construct(UserRepository $model)
+    public function __construct(BaseRepository $model)
     {
-        $this->model = $model;
+        $this->model = $model->model('user');
     }
 
     /**

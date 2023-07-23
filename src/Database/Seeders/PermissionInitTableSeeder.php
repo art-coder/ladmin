@@ -3,36 +3,35 @@
 namespace Artcoder\Ladmin\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Artcoder\Ladmin\Repositories\PermissionRepository;
-use Artcoder\Ladmin\Repositories\RoleRepository;
-use Artcoder\Ladmin\Repositories\UserRepository;
+use Artcoder\Ladmin\Repositories\BaseRepository;
 
 class PermissionInitTableSeeder extends Seeder
 {
-    public function __construct(PermissionRepository $permission, RoleRepository $role, UserRepository $user)
+
+    protected $rep = null;
+
+    public function __construct(BaseRepository $rep)
     {
-        $this->permission = $permission;
-        $this->role = $role;
-        $this->user = $user;
+        $this->rep = $rep;
     }
 
     public function run()
     {
-        $conf = require(__DIR__ . '/../../Config/config.php');
-        $config = isset($conf['permissions']) ? $conf['permissions'] : null;
+        $conf    = require(__DIR__ . '/../../Config/config.php');
+        $config  = isset($conf['permissions']) ? $conf['permissions'] : null;
         $rootIds = $editorIds = [];
         if ($config) {
             foreach ($config as $items) {
                 foreach ($items['list'] as $value) {
                     $name = $items['name'] . '-' . $value['can'];
-                    $one  = $this->permission->findWhere(['name' => $name])->first();
+                    $one  = $this->rep->repository('permission')->findWhere(['name' => $name])->first();
                     if ($one) {
                         if ($one->info != $value['name']) {
                             $one->info = $value['name'];
                             $one->save();
                         }
                     } else {
-                        $one = $this->permission->create([
+                        $one = $this->rep->model('permission')->create([
                             'name'       => $name,
                             'info'       => $value['name'],
                             'guard_name' => 'web',
@@ -48,9 +47,9 @@ class PermissionInitTableSeeder extends Seeder
 
         // ===> add roler
         $rootName = '管理员';
-        $root = $this->role->findWhere(['name' => $rootName])->first();
+        $root = $this->rep->repository('role')->findWhere(['name' => $rootName])->first();
         if (!$root) {
-            $root = $this->role->create([
+            $root = $this->rep->model('role')->create([
                 'name'       => $rootName,
                 'guard_name' => 'web',
             ]);
@@ -59,9 +58,9 @@ class PermissionInitTableSeeder extends Seeder
         $root->givePermissionTo($rootIds);
 
         $editorName = '编辑员';
-        $editor = $this->role->findWhere(['name' => $editorName])->first();
+        $editor = $this->rep->repository('role')->findWhere(['name' => $editorName])->first();
         if (!$editor) {
-            $editor = $this->role->create([
+            $editor = $this->rep->model('role')->create([
                 'name'       => '编辑员',
                 'guard_name' => 'web',
             ]);
@@ -71,7 +70,7 @@ class PermissionInitTableSeeder extends Seeder
 
         $isDev = app()->environment() !== 'production';
         if ($isDev) {
-            $user = $this->user->find(2);
+            $user = $this->rep->model('user')->find(2);
             $user->assignRole([2]);
         }
     }

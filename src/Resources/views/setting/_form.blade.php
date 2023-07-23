@@ -18,8 +18,8 @@
         <select class="form-control" name="type">
             <option value="input">单行文本</option>
             <option value="textarea">多行文本</option>
-            {{-- <option value="radio">单选</option> --}}
-            {{-- <option value="checkbox">多选</option> --}}
+            <option value="radio">单选</option>
+            <option value="checkbox">多选</option>
         </select>
     </div>
 </div>

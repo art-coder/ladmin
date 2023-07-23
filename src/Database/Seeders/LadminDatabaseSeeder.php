@@ -17,7 +17,8 @@ class LadminDatabaseSeeder extends Seeder
         Model::unguard();
 
         $this->call(UsersTableSeeder::class);
-        $this->call(PermissionInitTableSeeder::class);
+        $this->call(PermissionInitTableSeeder::class); // admin permission
+        // $this->call(ModulePermissionTableSeeder::class); // module permission
         $this->call(ConfigTableSeeder::class);
     }
 }

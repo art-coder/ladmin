@@ -13,7 +13,7 @@ class Config extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'item', 'type', 'description', 'content',
+        'item', 'type', 'description', 'content', 'value'
     ];
 
     // protected static function newFactory()

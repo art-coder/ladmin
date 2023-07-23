@@ -77,9 +77,17 @@ class IndexController extends Controller
         $item    = $all['item'];
         $content = $all['content'];
         foreach ($item as $key => $value) {
-            $one          = $admin->model('Config', 'Admin')->firstOrNew(['item' => $value]);
-            $one->content = $content[$key];
-            $one->save();
+            $one = $admin->model('Config', 'Admin')->firstOrNew(['item' => $value]);
+            if ($one->type == 'radio') {
+                $one->value = $content[$key];
+                $one->save();
+            } else if ($one->type == 'checkbox') {
+                $one->value = join(',', $all[$value]);
+                $one->save();
+            } else {
+                $one->content = $content[$key];
+                $one->save();
+            }
         }
         $admin->model('Config', 'Admin')->clearCache();
         return redirect('/admin/setting/index')->withSuccess('修改配置成功！！');

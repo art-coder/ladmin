@@ -9,11 +9,12 @@ use Spatie\Permission\Traits\HasRoles;
 use Artcoder\Ladmin\Libraries\Support\Traits\HasStatus;
 use Artcoder\Ladmin\Libraries\Support\Traits\HasStoreAuth;
 use Artcoder\Ladmin\Libraries\Support\Traits\HasUnableDeletePK;
-// use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles, HasStatus, HasUnableDeletePK, HasStoreAuth; //, HasApiTokens;
+    use MakeModel, HasApiTokens, HasFactory, Notifiable,
+    HasRoles, HasStatus, HasUnableDeletePK, HasStoreAuth;
 
     /**
      * The attributes that are mass assignable.

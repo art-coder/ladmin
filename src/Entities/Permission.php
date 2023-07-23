@@ -1,11 +1,12 @@
 <?php
 
 namespace Artcoder\Ladmin\Entities;
+use Spatie\Permission\Models\Permission as PPermission;
 
-use Spatie\Permission\Models\Permission as BaseModel;
-
-class Permission extends BaseModel
+class Permission extends PPermission
 {
+
+    use MakeModel;
 
     protected $fillable = [
         'name', 'info', 'guard_name',

@@ -2,6 +2,10 @@
 
 @section('title', '系统配置')
 
+@section('css')
+<link href="{{config('admin.assets_url.icheck_css')}}" rel="stylesheet">
+@stop
+
 @component('admin::components.button-add', ['title' => '系统配置', 'targetTitle' => '添加配置', 'targetUrl' => route('admin.setting.create')  ])
 @endcomponent
 
@@ -18,6 +22,60 @@
           <input type="hidden" name="item[]" value="{{$setting['item']}}">
           @if($setting['type'] == 'input')
             <input type="text" class="form-control" name="content[]" value="{{$setting['content']}}" id="{{$setting['item']}}" />
+          @elseif ($setting['type'] == 'radio')
+            @php
+              $items = explode("\r\n", $setting['content']);
+              $radio_list = [];
+              if ($items) {
+                foreach ($items as $item) {
+                  $values = explode('|', $item);
+                  if (count($values) !== 2) continue;
+                  array_push($radio_list, [
+                    'name'  => $values[0],
+                    'value' => $values[1]
+                  ]);
+                }
+              }
+            @endphp
+            <div class="form-group">
+              @foreach ($radio_list as $radio)
+                <input
+                  class="flat-red"
+                    @if ($radio['value'] == $setting['value'])
+                      checked
+                    @endif
+                  type="radio"
+                  name="content[]"
+                  value="{{$radio['value']}}" /> {{$radio['name']}}
+              @endforeach
+            </div>
+          @elseif ($setting['type'] == 'checkbox')
+            @php
+              $items = explode("\r\n", $setting['content']);
+              $checkbox_list = [];
+              if ($items) {
+                foreach ($items as $item) {
+                  $values = explode('|', $item);
+                  if (count($values) !== 2) continue;
+                  array_push($checkbox_list, [
+                    'name'  => $values[0],
+                    'value' => $values[1]
+                  ]);
+                }
+              }
+            @endphp
+            <div class="form-group">
+              @foreach ($checkbox_list as $checkbox)
+                <input
+                  class="flat-red"
+                    @if (in_array($checkbox['value'], explode(',', $setting['value'])))
+                      checked
+                    @endif
+                  type="checkbox"
+                  name="{{$setting['item']}}[]"
+                  value="{{$checkbox['value']}}" /> {{$checkbox['name']}}
+              @endforeach
+            </div>
           @else
             <textarea name="content[]" class="form-control" rows="5" id="{{$setting['item']}}">{{$setting['content']}}</textarea>
           @endif
@@ -31,3 +89,15 @@
   </form>
 </div>
 @stop
+
+@section('script')
+<script src="{{config('admin.assets_url.icheck_js')}}"></script>
+<script>
+//Flat red color scheme for iCheck
+$('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+  checkboxClass: 'icheckbox_flat-green',
+  radioClass   : 'iradio_flat-green'
+})
+</script>
+@stop
+

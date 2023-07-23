@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model as BaseModel;
 class Model extends BaseModel
 {
 
+    use MakeModel;
+
     public function scopeSorted($query, $type = 'desc')
     {
         return $query->orderBy('sort', $type);

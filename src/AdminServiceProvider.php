@@ -59,6 +59,7 @@ class AdminServiceProvider extends ServiceProvider
             __DIR__ . '/Config/admin.php',
             'admin'
         );
+        $this->mergeConfigFrom(__DIR__ . '/Config/config.php', 'admin');
 
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(PermissionServiceProvider::class);
