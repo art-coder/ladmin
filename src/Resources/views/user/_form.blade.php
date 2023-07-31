@@ -16,6 +16,8 @@
 @component('admin::components.form-group', ['title' => '电话', 'field' => 'phone', 'model' => $user ])
 @endcomponent
 
+@include(config('admin.user_extra_from'))
+
 @if ($user->canUpdateRoles())
   @component('admin::components.form-group-checkbox', ['title' => '角色列表', 'field' => 'rids', 'list' => $role, 'default' => $user->roles->pluck('id')->toArray(), 'model' => $user, 'hasCheck' => true ])
   @endcomponent

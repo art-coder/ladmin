@@ -13,7 +13,8 @@ class UserController extends Controller
 
     public function index(Request $request, AdminRepository $rep)
     {
-        $list = $rep->model('User')->paginate(15);
+        list($modelName, $moduleName) = config('admin.user_extra_model');
+        $list = $rep->model($modelName, $moduleName)->paginate(15);
 
         return view('admin::user.index', compact('list'));
     }
@@ -26,7 +27,8 @@ class UserController extends Controller
         $targetUrl   = route('admin.user.index', ['page' => $page]);
         $targetTitle = '用户列表';
         $formUrl     = route('admin.user.store', ['page' => $page]);
-        $user        = $rep->model('User');
+        list($modelName, $moduleName) = config('admin.user_extra_model');
+        $user        = $rep->model($modelName, $moduleName);
         $role        = $rep->model('Role')->all();
 
         return view(
@@ -43,7 +45,8 @@ class UserController extends Controller
         $targetUrl   = route('admin.user.index', ['page' => $page]);
         $targetTitle = '用户列表';
         $formUrl     = route('admin.user.store', ['page' => $page]);
-        $user        = $rep->model('User')->find($id);
+        list($modelName, $moduleName) = config('admin.user_extra_model');
+        $user        = $rep->model($modelName, $moduleName)->find($id);
         $role        = $rep->model('Role')->all();
 
         return view(
@@ -58,15 +61,16 @@ class UserController extends Controller
         $id           = $request->input('id');
         $roles        = $request->input('rids');
         $hasRoleCheck = $request->input('has_rids');
-        $user         = $rep->model('User')->find($id);
+        list($modelName, $moduleName) = config('admin.user_extra_model');
         if ($id) {
+            $user = $rep->model($modelName, $moduleName)->find($id);
             $pass = $request->input('password');
             $user->fill($request->except(['password', 'page', 'id', 'rids']));
             if ($pass) $user->password = bcrypt($pass); // change password
             $user->save();
             $redirectUrl = route('admin.user.index', ['page' => $page]);
         } else {
-            $user = $rep->apply('User')->store($request, null, ['password' => bcrypt($request->input('password'))]);
+            $user = $rep->repository($modelName, $moduleName)->store($request, null, ['password' => bcrypt($request->input('password'))]);
             $redirectUrl = route('admin.user.index');
         }
         if ($hasRoleCheck) {
@@ -79,7 +83,8 @@ class UserController extends Controller
 
     public function delete($id, AdminRepository $rep)
     {
-        $user = $rep->model('User')->find($id);
+        list($modelName, $moduleName) = config('admin.user_extra_model');
+        $user = $rep->model($modelName, $moduleName)->find($id);
         if (can_delete($user)) {
             $user->roles()->detach();
             $user->delete();
@@ -92,10 +97,11 @@ class UserController extends Controller
     public function search(Request $request, AdminRepository $rep)
     {
         $keywords = $request->input('keywords');
+        list($modelName, $moduleName) = config('admin.user_extra_model');
         if ($keywords) {
-            $list = $rep->builder('User')->search($keywords, ['username', 'phone', 'email'], 15);
+            $list = $rep->repository($modelName, $moduleName)->search($keywords, ['username', 'phone', 'email'], 15);
         } else {
-            $list = $rep->model('User')->pagination(15);
+            $list = $rep->model($modelName, $moduleName)->pagination(15);
         }
 
         return view('admin::user.index', compact('list', 'keywords'));

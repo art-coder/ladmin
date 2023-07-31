@@ -52,7 +52,8 @@ class AccountController extends Controller
     // 完成用户注册以及验证功能
     public function registerPost(RegisterUserRequest $request, AdminRepository $rep)
     {
-        $rep->model('User', 'Admin')->create([
+        list($modelName, $moduleName) = config('admin.user_extra_model');
+        $rep->model($modelName, $moduleName)->create([
             'username' => $request->input('username'),
             'email'    => $request->input('email'),
             'phone'    => $request->input('phone'),

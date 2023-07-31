@@ -4,6 +4,9 @@ return [
     'title'                             => 'ArtCoder',
     'title_prefix'                      => '后台管理系统',
 
+    'user_extra_from'                   => 'admin::user.extra',
+    'user_extra_model'                  => ['user', 'admin'],
+
     'logo'                              => '后台管理系统',
     'logo_mini'                         => '后台',
 
