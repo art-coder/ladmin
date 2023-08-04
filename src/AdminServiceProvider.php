@@ -45,6 +45,13 @@ class AdminServiceProvider extends ServiceProvider
         // $this->app->singleton('admin', function ($app) {
         //     return new Admin($app, 'Admin', __DIR__);
         // });
+
+        // Illuminate\Contracts\Container\Container $this->app
+        // singleton单例 bind每次make会实例化新的  instance移除已经存在的然后初始化
+        // app()->singleton('fun', fun::class);
+        // $fun1 = app()->make('fun');
+        // 下面这种直接绑定的时候就实例化了
+
         $this->app->singleton('admin', function ($app) {
             $path = __DIR__;
             return new \Nwidart\Modules\Laravel\Module($app, 'Admin', $path);

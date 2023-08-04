@@ -2,10 +2,9 @@
     "name": "artcoder/ladmin",
     "description": "ladmin is a laravel package admin management panel",
     "require": {
-        "doctrine/dbal": "^3.5",
+        "doctrine/dbal": "^3.7",
         "nwidart/laravel-modules": "^8.3",
         "spatie/laravel-html": "^2.30",
-        "laravel/sanctum": "^2.15",
         "spatie/laravel-permission": "^5.7",
         "barryvdh/laravel-ide-helper": "^2.12",
         "ottaviano/faker-gravatar": "^0.2.0",

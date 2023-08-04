@@ -1,6 +1,7 @@
 # Installation
 
 ```sh
+composer create-project laravel/laravel=8.* test
 composer create-project laravel/laravel demo
 cd demo
 composer require artcoder/ladmin
