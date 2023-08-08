@@ -68,10 +68,10 @@ class PermissionInitTableSeeder extends Seeder
         // $editor->syncPermissions($editorIds);
         $editor->givePermissionTo($editorIds);
 
-        $isDev = app()->environment() !== 'production';
-        if ($isDev) {
-            $user = $this->rep->model('user')->find(2);
-            $user->assignRole([2]);
-        }
+        // $isDev = app()->environment() !== 'production';
+        // if ($isDev) {
+        //     $user = $this->rep->model('user')->find(2);
+        //     $user->assignRole([2]);
+        // }
     }
 }

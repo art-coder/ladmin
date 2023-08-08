@@ -1,6 +1,7 @@
 # Installation
 
 ```sh
+# composer 镜像  https://pkg.xyz/
 composer create-project laravel/laravel=8.* test
 composer create-project laravel/laravel demo
 cd demo
@@ -12,7 +13,7 @@ composer require artcoder/ladmin
 {
   "autoload": {
     "psr-4": {
-      ...
+      // ...
       "Modules\\": "Modules/"
     }
   }
@@ -44,7 +45,7 @@ protected $except = [
 ```php
 // config/app.php
 'providers' => [
-  ...
+  // ...
   Artcoder\Ladmin\AdminServiceProvider::class,
 ],
 ```
