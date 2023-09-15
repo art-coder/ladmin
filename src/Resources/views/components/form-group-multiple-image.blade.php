@@ -11,6 +11,17 @@
       value="{{ $img }}"
     />
     <ul class="multiple-images-uploader" id="multiple-images-uploader-{{ $field }}">
+      @if ($model->$field)
+        @php
+          $images = explode($separator, $model->$field);
+        @endphp
+        @foreach ($images as $image)
+        <li>
+          <img class="img-responsive" style="max-width: 150px;" src="{{ $image }}" />
+          <button type="button" class="btn btn-danger btn-flat multiple-images-uploader-delete-btn"><i class="fa fa-close"></i></button>
+        </li>
+        @endforeach
+      @endif
     </ul>
     <div class="image-uploader-bar">
       <a class="btn btn-app" id="up{{ $field }}">
@@ -44,7 +55,7 @@ KindEditor.ready(function(K) {
         clickFn: function(url, title, width, height, border, align) {
           var urls = K('#{{ $field }}').val()
           if (urls) {
-            K('#{{ $field }}').val(urls + '|' + url)
+            K('#{{ $field }}').val(urls + '{{ $separator }}' + url)
           } else {
             K('#{{ $field }}').val(url)
           }
@@ -60,9 +71,9 @@ KindEditor.ready(function(K) {
 $('#multiple-images-uploader-{{ $field }}').on('click', 'li>button', function(){
   var del = $(this).parent().find('img').attr('src');
   var urls = $('#{{ $field }}').val();
-  var urlsArr = urls.split('|');
+  var urlsArr = urls.split('{{ $separator }}');
   urlsArr.splice(urlsArr.indexOf(del), 1);
-  $('#{{ $field }}').val(urlsArr.join('|'));
+  $('#{{ $field }}').val(urlsArr.join('{{ $separator }}'));
   $(this).parent().remove();
 });
 

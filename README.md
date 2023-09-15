@@ -91,13 +91,13 @@ php artisan module:make Cms
 
   use Modules\Cms\Entities\Posts;
   use Artcoder\Ladmin\Repositories\BaseRepository;
+  // or use Artcoder\Ladmin\Repositories\AdminRepository;
 
   class PostsRepository extends BaseRepository
   {
-    public function model()
-    {
-      return Posts::class;
-    }
+    // ...
+    // ->model('category', 'cms')  // model
+    // ->repository('category', 'cms') // repository
   }
 // view
   $folder      = 'cms-posts';
