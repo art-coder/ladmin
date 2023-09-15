@@ -11,7 +11,7 @@
             value="{{$val->id}}"
             @if(in_array($val->id, $default)) checked="checked" @endif
             />
-            {{$val->name}}
+            {{ isset($valueFieldName) ? $val->$valueFieldName : $val->name}}
         </label>
       @endforeach
     </div>

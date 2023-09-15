@@ -26,7 +26,7 @@ class UserFactory extends Factory
         $this->faker->addProvider(new \Ottaviano\Faker\Gravatar($this->faker));
         return [
             'username' => $this->faker->name,
-            'avatar' => $this->faker->gravatarUrl(),
+            'avatar' => 'https://picsum.photos/200',
             'phone' => $this->faker->unique()->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),

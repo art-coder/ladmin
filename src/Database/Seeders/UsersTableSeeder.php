@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
         // super admin
         $this->model->create([
             'username'       => 'ArtCoder',
-            'avatar'         => 'https://dss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1430948590,2484535776&fm=26&gp=0.jpg',
+            'avatar'         => 'https://picsum.photos/seed/1/200',
             'phone'          => '13800138000',
             'email'          => 'admin@artcoder.com',
             'is_super_admin' => 1,
@@ -44,7 +44,7 @@ class UsersTableSeeder extends Seeder
             // editor user
             $this->model->create([
                 'username' => 'edit',
-                'avatar'   => 'https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2019419245,1715884093&fm=26&gp=0.jpg',
+                'avatar'   => 'https://picsum.photos/seed/2/200',
                 'phone'    => '13800138001',
                 'email'    => 'edit@artcoder.com',
                 'password' => $adminPass,

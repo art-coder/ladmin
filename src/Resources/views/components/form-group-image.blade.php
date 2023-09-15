@@ -14,7 +14,7 @@
       class="img-responsive"
       style="max-width: 300px;"
       id="image-show-{{ $field }}"
-      src="{{ $img ? $img : '/assets/images/no-image.jpg' }}"
+      src="{{ $img ? $img : '/assets/images/no-image.png' }}"
       alt="{{ $title }}"
     /><br />
     <a class="btn btn-app" id="up{{ $field }}">
