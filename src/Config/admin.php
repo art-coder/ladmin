@@ -23,6 +23,7 @@ return [
         'admin_lte_all_skins_css'       => '/assets/plugins/admin-lte/css/skins/_all-skins.min.css',
         'bootstrap_switch_css'          => '/assets/plugins/bootstrap-switch/css.css',
         'kindeditor_css'                => '/assets/plugins/kindeditor/themes/default/default.css',
+        'select2_css'                   => '/assets/plugins/select2/css/select2.min.css',
 
         'htmlshiv_js'                   => '/assets/plugins/html5shiv/3.7.3.js',
         'respond_js'                    => '/assets/plugins/respond/1.4.2.js',
@@ -37,5 +38,6 @@ return [
         'json'                          => '/assets/plugins/json2/20160511.js',
         'kindeditor_js'                 => '/assets/plugins/kindeditor/kindeditor-all-min.js',
         'kindeditor_lang_js'            => '/assets/plugins/kindeditor/lang/zh-CN.js',
+        'select2_js'                    => '/assets/plugins/select2/js/select2.full.min.js',
     ],
 ];

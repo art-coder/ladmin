@@ -2,6 +2,7 @@
 
 namespace Artcoder\Ladmin\Entities;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel
@@ -23,6 +24,11 @@ class Model extends BaseModel
     {
         $this->timestamps = false;
         return $this;
+    }
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 
 }
