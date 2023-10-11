@@ -10,47 +10,56 @@ class AdminController extends Controller
     public $moduleName    = 'admin';
     public $folder        = 'user';
 
-    public function default_index(Request $request, $list, $modelName = '', $route = null, $ext = [])
+    // public function default_index(Request $request, $list, $modelName = '', $route = null, $ext = [])
+    public function default_index($data)
     {
-        $page        = $request->input('page');
+        $page        = isset($data['page']) ? $data['page'] : request()->input('page', 1);
         $folder      = $this->folder;
+        $modelName   = isset($data['modelName']) ? $data['modelName'] : '';
         $title       = $modelName . '列表';
-        $targetUrl   = $route ?? route('admin.' . $this->folder . '.create');
+        $targetUrl   = $data['route'] ?? route('admin.' . $this->folder . '.create');
         $targetTitle = '添加' . $modelName;
+        $list        = $data['list'];
 
-        $data        = compact('folder',  'title', 'targetUrl', 'targetTitle', 'list');
-        $datas       = $ext ? array_merge($data, $ext) : $data;
+        $compact     = compact('folder',  'title', 'targetUrl', 'targetTitle', 'list');
+        $datas       = isset($data['extData']) ? array_merge($compact, $data['extData']) : $compact;
 
         return view($this->moduleName . '::' . $this->folder . '.index', $datas);
     }
 
-    public function default_create(Request $request, $model, $modelName = '', $targetUrl = null, $formUrl = null, $ext = [])
+    // public function default_create(Request $request, $model, $modelName = '', $targetUrl = null, $formUrl = null, $ext = [])
+    public function default_create($data)
     {
-        $page        = $request->input('page');
+        $page        = isset($data['page']) ? $data['page'] : request()->input('page', 1);
         $folder      = $this->folder;
+        $modelName   = isset($data['modelName']) ? $data['modelName'] : '';
         $title       = '添加' . $modelName;
         $targetTitle = $modelName . '列表';
-        $targetUrl   = $targetUrl ?? route('admin.' . $this->folder . '.index', ['page' => $page]);
-        $formUrl     = $formUrl ?? route('admin.' . $this->folder . '.store', ['page' => $page]);
+        $targetUrl   = $data['targetUrl'] ?? route('admin.' . $this->folder . '.index', ['page' => $page]);
+        $formUrl     = $data['formUrl'] ?? route('admin.' . $this->folder . '.store', ['page' => $page]);
+        $model       = $data['model'];
 
-        $data        = compact('model', 'folder', 'title', 'formUrl', 'targetUrl', 'targetTitle');
-        $datas       = $ext ? array_merge($data, $ext) : $data;
+        $compact     = compact('model', 'folder', 'title', 'formUrl', 'targetUrl', 'targetTitle');
+        $datas       = isset($data['extData']) ? array_merge($compact, $data['extData']) : $compact;
 
         return view('admin::partials.create', $datas);
     }
 
-    public function default_edit($id, Request $request, $model, $modelName = '', $targetUrl = null, $formUrl = null, $ext = [])
+    // public function default_edit($id, Request $request, $model, $modelName = '', $targetUrl = null, $formUrl = null, $ext = [])
+    public function default_edit($id, $data)
     {
-        $page        = $request->input('page');
+        $page        = isset($data['page']) ? $data['page'] : request()->input('page', 1);
         $folder      = $this->folder;
+        $modelName   = isset($data['modelName']) ? $data['modelName'] : '';
         $title       = $modelName . '管理';
         $subtitle    = '修改' . $modelName;
         $targetTitle = $modelName . '列表';
-        $targetUrl   = $targetUrl ?? route('admin.' . $this->folder . '.index', ['page' => $page]);
-        $formUrl     = $formUrl ?? route('admin.' . $this->folder . '.store', ['page' => $page]);
+        $targetUrl   = $data['targetUrl'] ?? route('admin.' . $this->folder . '.index', ['page' => $page]);
+        $formUrl     = $data['formUrl'] ?? route('admin.' . $this->folder . '.store', ['page' => $page]);
+        $model       = $data['model'];
 
-        $data        = compact('model', 'folder', 'title', 'subtitle', 'targetUrl', 'targetTitle', 'formUrl', 'id');
-        $datas       = $ext ? array_merge($data, $ext) : $data;
+        $compact     = compact('model', 'folder', 'title', 'subtitle', 'targetUrl', 'targetTitle', 'formUrl', 'id');
+        $datas       = isset($data['extData']) ? array_merge($compact, $data['extData']) : $compact;
 
         return view('admin::partials.edit', $datas);
     }
