@@ -110,17 +110,9 @@ class Uploads
     {
         if ($this->disks == 'local') {
             return $this->deleteWithLocal($path);
-        } else if ($this->disks == 'qiniu') {
-            return $this->deleteWithQiniu($path);
         } else {
             return $this->deleteWithClond($path);
         }
-    }
-
-    protected function deleteWithQiniu($path)
-    {
-        // $disk = \zgldh\QiniuStorage\QiniuStorage::disk('qiniu');
-        // $disk->delete($path);
     }
 
     protected function deleteWithClond($path)
@@ -130,13 +122,27 @@ class Uploads
 
     protected function deleteWithLocal($path)
     {
-        @unlink(public_path($path));
+        $disks = config('filesystems.disks.' . $this->disks);
+        $path  = $disks['root'] . $path;
+        if (file_exists($path)) {
+            return @unlink($path);
+        }
+        return false;
     }
 
-    protected function upWithClond($file, $path = '')
+    protected function upWithClond($file, $folder = '')
     {
-        $path = $file->store(($path ? $path . '/' : '') . date('Y/m/d', time()));
-        return $path;
+        if (!$folder) {
+            $disks = config('filesystems.disks.' . $this->disks);
+            if (isset($disks['root'])) {
+                $folder =  $disks['root'];
+            } else {
+                $folder = date('Y/m');
+            }
+        }
+        $ups    = $file->store($folder, $this->disks);
+        $domain = isset($disks['url']) ? $disks['url'] : '';
+        return $domain . '/' . $ups;
     }
 
     protected function upWithLocal($file, $path = '')
